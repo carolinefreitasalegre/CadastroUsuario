@@ -48,7 +48,6 @@ namespace CadastroUsuario.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Admin,Usuario")]
-
         public ActionResult ListarUsuarios()
         {
             var usuarios = _service.ListarUsuarios();
@@ -69,7 +68,6 @@ namespace CadastroUsuario.Controllers
 
         [HttpGet("{id}")]
         [Authorize(Roles = "Admin,Usuario")]
-
         public ActionResult BuscarUsuarioPorId(int id)
         {
             var usuario = _service.BuscarUsuarioId(id);

@@ -34,14 +34,13 @@ namespace CadastroUsuario.Validators.ValidarUsuario
                 .IsInEnum().WithMessage("Tipo de usuário inválido.");
         }
 
-        private async Task<bool> EmailUnico(string email, CancellationToken token)
+        private async Task<bool> EmailUnico(SalvarOuAtualizarUsuarioDto dto, string email, CancellationToken token)
         {
             var usuario = _repository.BuscarUsuarioEmail(email);
 
-            if (usuario.Email == email)
-                return true;
+            if (usuario == null) return true; 
 
-            return usuario == null;
+            return usuario.Id == dto.Id;
         }
 
     }
