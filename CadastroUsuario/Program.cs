@@ -16,6 +16,16 @@ var builder = WebApplication.CreateBuilder(args);
 var key = builder.Configuration["Token"];
 var keyBytes = Encoding.ASCII.GetBytes(key);
 
+
+builder.Services.AddCors(opt =>
+{
+    opt.AddPolicy("AllowBlazor",
+        policy => policy.WithOrigins("https://localhost:7219")
+        .AllowAnyMethod()
+        .AllowAnyHeader());
+});
+
+
 builder.Services.AddAuthentication(opt =>
 {
     opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -40,6 +50,8 @@ builder.Services.AddScoped<IDapperContext, DapperContext>();
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 
+builder.Services.AddScoped<IUsuarioService, UsuarioService>();
+
 builder.Services.AddTransient<IValidator<SalvarOuAtualizarUsuarioDto>, UsuarioValidator>();
 
 
@@ -56,6 +68,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowBlazor");
 
 app.UseAuthentication();
 

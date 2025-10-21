@@ -1,0 +1,69 @@
+﻿@rendermode InteractiveServer
+@inject DialogService DialogService
+@page "/usuarios"
+
+
+<RadzenStack Gap="1rem" Style="padding: 20px;">
+    <RadzenRow AlignItems="AlignItems.Center">
+        <RadzenColumn Size="6">
+            <RadzenText TextStyle="TextStyle.H4">Usuários</RadzenText>
+        </RadzenColumn>
+        <RadzenColumn Size="6" Style="text-align: right;">
+            <RadzenButton Icon="add" Text="Novo Usuário"
+                          ButtonStyle="ButtonStyle.Primary" Click="@AbrirDialogNovoUsuario"/>
+        </RadzenColumn>
+    </RadzenRow>
+
+    <RadzenCard>
+        <RadzenDataGrid Data="@usuarios" TItem="Usuario"
+                        AllowFiltering="true"
+                        AllowSorting="true"
+                        FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                        Style="width: 100%;">
+            <Columns>
+                <RadzenDataGridColumn TItem="Usuario" Property="Id" Title="ID" Width="80px" />
+                <RadzenDataGridColumn TItem="Usuario" Property="Nome" Title="Nome" />
+                <RadzenDataGridColumn TItem="Usuario" Property="Email" Title="Email" />
+                <RadzenDataGridColumn TItem="Usuario" Property="Telefone" Title="Telefone" Width="150px" />
+                <RadzenDataGridColumn TItem="Usuario" Property="Tipo" Title="Tipo" Width="150px" />
+                <RadzenDataGridColumn TItem="Usuario" Title="Ações" Width="200px" Sortable="false" Filterable="false">
+                    <!-- ações -->
+                </RadzenDataGridColumn>
+            </Columns>
+        </RadzenDataGrid>
+    </RadzenCard>
+</RadzenStack>
+
+@code {
+    private List<Usuario> usuarios = new();
+
+    private async Task AbrirDialogNovoUsuario()
+    {
+        Console.WriteLine("🔵 Método chamado");
+        Console.WriteLine($"🔍 DialogService é null? {DialogService == null}");
+
+        try
+        {
+            Console.WriteLine("🔵 Antes do OpenAsync");
+            var result = await DialogService.OpenAsync<UsuarioDialog>(
+                "Novo Usuário",
+                new Dictionary<string, object>(),
+                new DialogOptions() { Width = "500px", ShowClose = true });
+            Console.WriteLine($"✅ Dialog retornou: {result}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"❌ ERRO: {ex.Message}");
+            Console.WriteLine($"❌ Stack: {ex.StackTrace}");
+        }
+    }
+
+
+
+    public class Usuario
+    {
+        public int Id { get; set; }
+        public string Nome { get; set; } = "";
+        public string Email { get; set; } = "";
+    }
+}

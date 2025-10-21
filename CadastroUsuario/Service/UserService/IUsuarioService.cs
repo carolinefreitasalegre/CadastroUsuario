@@ -1,5 +1,4 @@
-﻿using CadastroUsuario.Dto;
-using CadastroUsuario.Models.UserModel;
+﻿using CadastroUsuario.Models.UserModel;
 
 namespace CadastroUsuario.Service.UserService
 {

@@ -1,0 +1,68 @@
+﻿@page "/"
+@rendermode InteractiveServer
+@inject NavigationManager NavManager
+
+
+<PageTitle>Login</PageTitle>
+
+<RadzenCard Style="max-width: 400px; margin: 100px auto; padding: 40px;">
+    <RadzenStack Gap="1.5rem">
+        <RadzenText TextStyle="TextStyle.H4" TagName="TagName.H1" Style="text-align: center;">
+            Login
+        </RadzenText>
+
+        <EditForm Model="@loginModel" OnValidSubmit="@OnSubmitAsync">
+            <DataAnnotationsValidator />
+            <RadzenStack Gap="1rem">
+                <RadzenFormField Text="Email" Variant="Variant.Outlined">
+                    <RadzenTextBox @bind-Value="loginModel.Email"
+                                   Style="width: 100%;"
+                                   Name="Email"
+                                   Placeholder="seu@email.com" />
+                </RadzenFormField>
+                <RadzenFormField Text="Senha" Variant="Variant.Outlined">
+                    <RadzenPassword @bind-Value="loginModel.Senha"
+                                    Style="width: 100%;"
+                                    Name="Senha"
+                                    Placeholder="••••••••" />
+                </RadzenFormField>
+                <RadzenButton ButtonType="ButtonType.Submit"
+                              Style="width: 100%;"
+                              Size="ButtonSize.Large"
+                              Text="Entrar" />
+            </RadzenStack>
+        </EditForm>
+    </RadzenStack>
+</RadzenCard>
+
+@code {
+    private Usuario loginModel = new();
+    
+
+    private async Task OnSubmitAsync()
+    {
+        Console.WriteLine("🚀 OnSubmitAsync chamado!");
+        Console.WriteLine($"📧 Email: '{loginModel.Email}'");
+        Console.WriteLine($"🔑 Senha: '{loginModel.Senha}'");
+
+        if (loginModel.Email == "teste@teste.com" && loginModel.Senha == "1234")
+        {
+            Console.WriteLine("✅ Navegando para /usuarios");
+            NavManager.NavigateTo("/usuarios");
+        }
+        else
+        {
+            Console.WriteLine("❌ Credenciais inválidas!");
+        }
+    }
+    
+
+    // public class LoginModel
+    // {
+    //     [Required]
+    //     public string Email { get; set; } = "";
+
+    //     [Required]
+    //     public string Senha { get; set; } = "";
+    // }
+}

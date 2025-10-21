@@ -1,0 +1,87 @@
+﻿@rendermode InteractiveServer
+@inject DialogService DialogService
+
+
+<RadzenTemplateForm Data="usuarioModel" Click="@Salvar">
+    <RadzenStack Gap="1rem">
+        <RadzenFormField Text="Nome" Variant="Variant.Outlined">
+            <RadzenTextBox @bind-Value="usuarioModel.Nome" Style="width: 100%;" />
+        </RadzenFormField>
+
+        <RadzenFormField Text="Email" Variant="Variant.Outlined">
+            <RadzenTextBox @bind-Value="usuarioModel.Email" Style="width: 100%;" />
+        </RadzenFormField>
+
+        <RadzenFormField Text="Telefone" Variant="Variant.Outlined">
+            <RadzenTextBox @bind-Value="usuarioModel.Telefone" Style="width: 100%;" />
+        </RadzenFormField>
+
+        <RadzenFormField Text="Senha" Variant="Variant.Outlined">
+            <RadzenPassword @bind-Value="usuarioModel.Senha" Style="width: 100%;" />
+        </RadzenFormField>
+
+        <RadzenFormField Text="Tipo de Usuário" Variant="Variant.Outlined">
+            <RadzenDropDown @bind-Value="usuarioModel.TipoUsuario"
+                            Data="@(Enum.GetValues<ETipoUsuario>())"
+                            Style="width: 100%;" />
+        </RadzenFormField>
+
+        <RadzenStack Orientation="Orientation.Horizontal"
+                     JustifyContent="JustifyContent.End" Gap="0.5rem">
+            <RadzenButton Text="Cancelar"
+                          ButtonStyle="ButtonStyle.Light"
+                          Click="Cancelar" />
+            <RadzenButton ButtonType="ButtonType.Submit"
+                          Text="Salvar"
+                          ButtonStyle="ButtonStyle.Primary" />
+        </RadzenStack>
+    </RadzenStack>
+</RadzenTemplateForm>
+
+
+
+@code {
+    [Parameter] public Usuario? Usuario { get; set; }
+    [Parameter] public ETipoUsuario? TipoUsuario { get; set; }
+
+    private Usuario usuarioModel = new();
+
+    // protected override void OnInitialized()
+    // {
+    //     usuarioModel = Usuario != null
+    //         ? new Usuario { Id = Usuario.Id, Nome = Usuario.Nome, Email = Usuario.Email }
+    //         : new Usuario();
+    // }
+
+    private async Task AbrirDialogNovoUsuario()
+    {
+        Console.WriteLine("🔵 Tentando abrir dialog...");
+        try
+        {
+            var result = await DialogService.OpenAsync<UsuarioDialog>("Novo Usuário",
+                new Dictionary<string, object>() { },
+                new DialogOptions() { Width = "500px" });
+            Console.WriteLine($"✅ Dialog retornou: {result}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"❌ Erro: {ex.Message}");
+        }
+    }
+
+    private async Task Salvar()
+    {
+        // if (u.Id == 0)
+        //     await Service.AddUsuarioAsync(u);
+        // else
+        //     await Service.UpdateUsuarioAsync(u);
+
+        // DialogService.Close(true);
+        Console.WriteLine("teste");
+    }
+
+    private void Cancelar()
+    {
+        // DialogService.Close(false);
+    }
+}
